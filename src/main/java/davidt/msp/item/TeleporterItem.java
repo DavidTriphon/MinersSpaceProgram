@@ -5,6 +5,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.item.*;
 import net.minecraft.util.*;
+import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import net.minecraft.world.dimension.*;
 import net.minecraft.world.server.*;
@@ -32,6 +33,8 @@ public class TeleporterItem extends Item
       public Entity placeEntity(Entity entity, ServerWorld currentWorld, ServerWorld destWorld,
         float yaw, Function <Boolean, Entity> repositionEntity)
       {
+         entity.moveForced(entity.getPosition().getX(), 128, entity.getPosition().getZ());
+         
          return repositionEntity.apply(false);
       }
    };
