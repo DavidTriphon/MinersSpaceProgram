@@ -11,6 +11,6 @@ public final class MSPModDimensions
    public static final DeferredRegister <ModDimension> MOD_DIMENSIONS =
      new DeferredRegister <>(ForgeRegistries.MOD_DIMENSIONS, MinersSpaceProgram.MOD_ID);
    
-   public static final RegistryObject <ModDimension> SPACE_MOD_DIM =
+   public static final RegistryObject <ModDimension> SPACE =
      MOD_DIMENSIONS.register("msp_space", SpaceModDim::new);
 }

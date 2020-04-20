@@ -1,6 +1,8 @@
 package davidt.msp;
 
 import davidt.msp.dimension.mod.*;
+import davidt.msp.item.*;
+import davidt.msp.world.biome.*;
 import net.minecraft.block.*;
 import net.minecraftforge.common.*;
 import net.minecraftforge.event.*;
@@ -37,7 +39,8 @@ public class MinersSpaceProgram
       
       // Link up register callbacks for blocks, item, biomes, dimensions, etc.
       MSPModDimensions.MOD_DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
-      
+      MSPBiomes.BIOMES.register(FMLJavaModLoadingContext.get().getModEventBus());
+      MSPItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
       
       // Register ourselves for server and other game events we are interested in
       MinecraftForge.EVENT_BUS.register(this);
