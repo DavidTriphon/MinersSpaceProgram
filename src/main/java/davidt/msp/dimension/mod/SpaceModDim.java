@@ -1,5 +1,6 @@
-package davidt.msp.common;
+package davidt.msp.dimension.mod;
 
+import davidt.msp.dimension.*;
 import net.minecraft.world.*;
 import net.minecraft.world.dimension.*;
 import net.minecraftforge.common.*;
@@ -7,12 +8,12 @@ import net.minecraftforge.common.*;
 import java.util.function.*;
 
 
-public class SpaceDimension extends ModDimension
+public class SpaceModDim extends ModDimension
 {
    
    @Override
    public BiFunction <World, DimensionType, ? extends Dimension> getFactory()
    {
-      return null;
+      return SpaceDimension::new;
    }
 }

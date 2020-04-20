@@ -1,23 +1,21 @@
 package davidt.msp;
 
+import davidt.msp.dimension.mod.*;
 import net.minecraft.block.*;
 import net.minecraftforge.common.*;
 import net.minecraftforge.event.*;
 import net.minecraftforge.eventbus.api.*;
-import net.minecraftforge.fml.*;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.event.lifecycle.*;
 import net.minecraftforge.fml.event.server.*;
 import net.minecraftforge.fml.javafmlmod.*;
 import org.apache.logging.log4j.*;
 
-import java.util.stream.*;
-
 
 @Mod(MinersSpaceProgram.MOD_ID)
 public class MinersSpaceProgram
 {
-   public static final String MOD_ID = "msp";
+   public static final String MOD_ID   = "miners_space_program";
    public static final String MOD_NAME = "MinersSpaceProgram";
    
    private static final Logger LOGGER = LogManager.getLogger();
@@ -27,53 +25,57 @@ public class MinersSpaceProgram
    {
       // taken from example mod
       // Register the setup method for modloading
-      FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-      // Register the enqueueIMC method for modloading
-      FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-      // Register the processIMC method for modloading
-      FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+      FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doCommonSetup);
       // Register the doClientStuff method for modloading
-      FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+      FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientSetup);
+      // Register the doClientStuff method for modloading
+      FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doServerSetup);
+      // Register the enqueueIMC method for modloading
+      FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doIMEnqueue);
+      // Register the processIMC method for modloading
+      FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doIMProcess);
+      
+      // Link up register callbacks for blocks, item, biomes, dimensions, etc.
+      MSPModDimensions.MOD_DIMENSIONS.register(FMLJavaModLoadingContext.get().getModEventBus());
+      
       
       // Register ourselves for server and other game events we are interested in
       MinecraftForge.EVENT_BUS.register(this);
    }
    
    
-   private void setup(final FMLCommonSetupEvent event)
+   // CALLED FIRST
+   private void doCommonSetup(final FMLCommonSetupEvent event)
    {
-      LOGGER.debug("PREINIT FOR {}", MOD_NAME);
-      // some preinit code
-      LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+      LOGGER.debug("Common Setup FOR {}", MOD_NAME);
    }
    
    
-   private void doClientStuff(final FMLClientSetupEvent event)
+   // CALLED SECOND
+   private void doClientSetup(final FMLClientSetupEvent event)
    {
-      LOGGER.debug("PREINIT FOR {}", MOD_NAME);
-      // do something that can only be done on the client
-      LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
+      LOGGER.debug("Client Setup FOR {}", MOD_NAME);
    }
    
    
-   private void enqueueIMC(final InterModEnqueueEvent event)
+   // CALLED SECOND
+   private void doServerSetup(final FMLDedicatedServerSetupEvent event)
    {
-      LOGGER.debug("ENQUEU_IMC FOR {}", MOD_NAME);
-      // some example code to dispatch IMC to another mod
-      InterModComms.sendTo(MOD_ID, "helloworld", () -> {
-         LOGGER.info("Hello world from the MDK");
-         return "Hello world";
-      });
+      LOGGER.debug("Server Setup FOR {}", MOD_NAME);
    }
    
    
-   private void processIMC(final InterModProcessEvent event)
+   // CALLED THIRD
+   private void doIMEnqueue(final InterModEnqueueEvent event)
    {
-      LOGGER.debug("PREINIT FOR {}", MOD_NAME);
-      // some example code to receive and process InterModComms from other mods
-      LOGGER.info("Got IMC {}", event.getIMCStream().
-        map(m -> m.getMessageSupplier().get()).
-        collect(Collectors.toList()));
+      LOGGER.debug("InterMod Enqueue FOR {}", MOD_NAME);
+   }
+   
+   
+   // CALLED FOURTH
+   private void doIMProcess(final InterModProcessEvent event)
+   {
+      LOGGER.debug("InterMod Process FOR {}", MOD_NAME);
    }
    
    
@@ -82,13 +84,12 @@ public class MinersSpaceProgram
    public void onServerStarting(FMLServerStartingEvent event)
    {
       // do something when the server starts
-      LOGGER.info("HELLO from server starting");
+      LOGGER.debug("HELLO from server starting");
    }
    
    
    // You can use EventBusSubscriber to automatically subscribe events on the contained class
-   // (this is subscribing to the MOD
-   // Event bus for receiving Registry Events)
+   // (this is subscribing to the MOD Event bus for receiving Registry Events)
    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
    public static class RegistryEvents
    {
@@ -96,7 +97,7 @@ public class MinersSpaceProgram
       public static void onBlocksRegistry(final RegistryEvent.Register <Block> blockRegistryEvent)
       {
          // register a new block here
-         LOGGER.info("HELLO from Register Block");
+         LOGGER.debug("HELLO from Register Block");
       }
    }
 }
