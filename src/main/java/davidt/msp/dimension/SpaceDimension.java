@@ -1,7 +1,9 @@
 package davidt.msp.dimension;
 
+import com.mojang.datafixers.*;
 import davidt.msp.world.biome.*;
 
+import net.minecraft.nbt.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import net.minecraft.world.biome.provider.*;
@@ -31,8 +33,12 @@ public class SpaceDimension extends Dimension
       SingleBiomeProvider biomeProvider = BiomeProviderType.FIXED.create(biomeProviderSettings);
       
       // generation settings
+      CompoundNBT nbt = new CompoundNBT();
+      nbt.put("layers", new ListNBT()); // empty list, we don't want any blocks
+      // nbt.putString("biome"); // supposedly biome string defaults to ""?
+      nbt.put("structures", new CompoundNBT()); // empty structures
       FlatGenerationSettings flatGenerationSettings =
-        FlatGenerationSettings.createFlatGenerator(null);
+        FlatGenerationSettings.createFlatGenerator(new Dynamic <>(NBTDynamicOps.INSTANCE, nbt));
       
       // flat chunk
       return new FlatChunkGenerator(world, biomeProvider, flatGenerationSettings);
