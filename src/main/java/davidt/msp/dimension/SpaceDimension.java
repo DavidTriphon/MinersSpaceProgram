@@ -34,8 +34,13 @@ public class SpaceDimension extends Dimension
       
       // generation settings
       CompoundNBT nbt = new CompoundNBT();
-      nbt.put("layers", new ListNBT()); // empty list, we don't want any blocks
-      // nbt.putString("biome"); // supposedly biome string defaults to ""?
+      ListNBT layers = new ListNBT();
+      CompoundNBT airLayer = new CompoundNBT();
+      airLayer.putInt("height", 1);
+      airLayer.putString("block", "minecraft:air");
+      layers.add(airLayer);
+      nbt.put("layers", layers); // empty list, we don't want any blocks
+      nbt.putString("biome", MSPBiomes.SPACE.get().getRegistryName().toString()); // supposedly biome string defaults to ""?
       nbt.put("structures", new CompoundNBT()); // empty structures
       FlatGenerationSettings flatGenerationSettings =
         FlatGenerationSettings.createFlatGenerator(new Dynamic <>(NBTDynamicOps.INSTANCE, nbt));
