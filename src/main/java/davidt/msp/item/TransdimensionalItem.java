@@ -6,10 +6,12 @@ import net.minecraft.entity.player.*;
 import net.minecraft.item.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
+import org.apache.logging.log4j.*;
 
 
 public class TransdimensionalItem extends Item
 {
+   public static final Logger LOGGER = LogManager.getLogger();
    
    public TransdimensionalItem()
    {
@@ -23,6 +25,8 @@ public class TransdimensionalItem extends Item
    {
       if (worldIn.isRemote)
       {
+         LOGGER.warn("Using the transdimensional item! Prepare for a soft crash!");
+         
          if (ClientWorldHandler.world != null)
             Minecraft.getInstance().loadWorld(ClientWorldHandler.world);
       }
