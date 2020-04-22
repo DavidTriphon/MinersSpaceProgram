@@ -14,4 +14,7 @@ public class MSPItems
    
    public static final RegistryObject <Item> TELEPORTER_ITEM =
      ITEMS.register("space_teleporter", TeleporterItem::new);
+   
+   public static final RegistryObject <Item> TRANSDIMENSIONAL_ITEM =
+     ITEMS.register("transdimensional", TransdimensionalItem::new);
 }
