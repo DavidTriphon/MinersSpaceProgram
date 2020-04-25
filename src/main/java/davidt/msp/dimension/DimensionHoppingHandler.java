@@ -31,8 +31,6 @@ public class DimensionHoppingHandler
       public Entity placeEntity(Entity entity, ServerWorld currentWorld, ServerWorld destWorld,
         float yaw, Function <Boolean, Entity> repositionEntity)
       {
-         entity.moveForced(entity.getPosition().getX(), 128, entity.getPosition().getZ());
-         
          return repositionEntity.apply(false);
       }
    };
