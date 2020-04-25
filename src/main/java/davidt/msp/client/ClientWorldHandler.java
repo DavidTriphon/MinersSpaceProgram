@@ -28,6 +28,8 @@ public class ClientWorldHandler
    {
       MinecraftForge.EVENT_BUS.addListener(ClientWorldHandler::worldUnload);
       MinecraftForge.EVENT_BUS.addListener(ClientWorldHandler::renderWorldLast);
+      MinecraftForge.EVENT_BUS.addListener(ClientWorldHandler::renderStart);
+      MinecraftForge.EVENT_BUS.addListener(ClientWorldHandler::runTickPostClient);
    }
    
    
@@ -37,7 +39,12 @@ public class ClientWorldHandler
       
       if (iWorld.isRemote())
       {
+         Minecraft mc = Minecraft.getInstance();
+         
          lastClientWorld = (ClientWorld) iWorld;
+         worldRenderer = new WorldRenderer(mc, mc.worldRenderer.renderTypeTextures);
+         worldRenderer.loadRenderers();
+         worldRenderer.setWorldAndLoadRenderers(lastClientWorld);
       }
    }
    
@@ -68,14 +75,8 @@ public class ClientWorldHandler
       {
          Minecraft mc = Minecraft.getInstance();
          
-         if (worldRenderer == null || !worldRenderer.world.equals(lastClientWorld))
-         {
-            worldRenderer = new WorldRenderer(mc, mc.worldRenderer.renderTypeTextures);
-            worldRenderer.loadRenderers();
-            worldRenderer.setWorldAndLoadRenderers(lastClientWorld);
-         }
-         
          ClientWorld mainWorld = mc.world;
+         mc.world = lastClientWorld;
          
          try
          {
