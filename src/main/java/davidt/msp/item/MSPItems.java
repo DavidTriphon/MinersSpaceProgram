@@ -24,4 +24,8 @@ public class MSPItems
    public static final RegistryObject <Item> MIRROR_PLAYER_ITEM =
      ITEMS.register("mirror_player",
        () -> new SpecialActionItem(DimensionHoppingHandler::createMirrorSelf));
+   
+   public static final RegistryObject<Item> TOGGLE_RENDER =
+   ITEMS.register("toggle_render",
+     () -> new SpecialActionItem(DimensionHoppingHandler::toggleExtraRender));
 }

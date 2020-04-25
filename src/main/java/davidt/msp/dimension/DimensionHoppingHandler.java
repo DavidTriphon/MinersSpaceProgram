@@ -67,8 +67,8 @@ public class DimensionHoppingHandler
       {
          LOGGER.warn("Using the transdimensional item! Prepare for a soft crash!");
          
-         if (ClientWorldHandler.world != null)
-            Minecraft.getInstance().loadWorld(ClientWorldHandler.world);
+         if (ClientWorldHandler.lastClientWorld != null)
+            Minecraft.getInstance().loadWorld(ClientWorldHandler.lastClientWorld);
       }
       
       return true;
@@ -101,6 +101,17 @@ public class DimensionHoppingHandler
       if (!world.isRemote)
       {
       
+      }
+      
+      return true;
+   }
+   
+   
+   public static boolean toggleExtraRender(PlayerEntity player, World world)
+   {
+      if (world.isRemote)
+      {
+         ClientWorldHandler.shouldRenderExtraWorld = !ClientWorldHandler.shouldRenderExtraWorld;
       }
       
       return true;
